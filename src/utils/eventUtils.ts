@@ -48,3 +48,8 @@ export function getFilteredEvents(
 
   return searchedEvents;
 }
+
+export function getRepeatEvents(event: Event): Event[] {
+  const events: Event[] = [];
+  return events;
+}
