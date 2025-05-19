@@ -92,3 +92,31 @@ export const setupMockHandlerDeletion = () => {
     })
   );
 };
+
+export const setupMockHandlerRepeat = () => {
+  const mockEvents: Event[] = [
+    {
+      id: '1',
+      title: '반복 이벤트',
+      date: '2025-10-15',
+      startTime: '09:00',
+      endTime: '10:00',
+      description: '반복 이벤트입니다',
+      location: '어딘가',
+      category: '기타',
+      repeat: { type: 'daily', interval: 1 },
+      notificationTime: 10,
+    },
+  ];
+
+  server.use(
+    http.get('/api/events', () => {
+      return HttpResponse.json({ events: mockEvents });
+    }),
+    http.post('/api/events-list', async ({ request }) => {
+      const newEvents = (await request.json()) as { events: Event[] };
+      mockEvents.push(...newEvents.events);
+      return HttpResponse.json(newEvents, { status: 201 });
+    })
+  );
+};
