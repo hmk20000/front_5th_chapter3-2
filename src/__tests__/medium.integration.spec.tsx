@@ -198,7 +198,9 @@ describe('일정 뷰', () => {
 
     const weekView = within(screen.getByTestId('week-view'));
     expect(weekView.getByText('반복 이벤트')).toBeInTheDocument();
-    expect(weekView.getByText('반복 이벤트')).toHaveStyle('background-color: yellow');
+    expect(weekView.getByText('반복 이벤트')).toHaveStyle(
+      'background-color: rgba(255, 255, 0, 0.5)'
+    );
   });
 });
 
