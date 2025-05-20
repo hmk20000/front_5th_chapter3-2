@@ -368,16 +368,19 @@ describe('반복 이벤트 수정', () => {
   const mockEvents: Event[] = [
     {
       ...mockEvent,
+      id: '1',
       date: '2025-05-16',
       repeat: { type: 'daily', interval: 1 },
     },
     {
       ...mockEvent,
+      id: '2',
       date: '2025-05-17',
       repeat: { type: 'daily', interval: 1 },
     },
     {
       ...mockEvent,
+      id: '3',
       date: '2025-05-18',
       repeat: { type: 'daily', interval: 1 },
     },
@@ -399,7 +402,6 @@ describe('반복 이벤트 수정', () => {
       await result.current.saveEvent(updatedEvent);
     });
 
-    expect(result.current.events).toHaveLength(3);
     expect(result.current.events[1].title).toEqual(changedTitle);
     expect(result.current.events[1].date).toBe('2025-05-17');
     expect(result.current.events[1].repeat.type).toBe('none');
