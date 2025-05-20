@@ -350,3 +350,58 @@ describe('반복 이벤트 저장', () => {
     expect(result.current.events.map((event) => event.date)).toEqual(answer);
   });
 });
+
+describe('반복 이벤트 수정', () => {
+  const mockEvent: Event = {
+    id: '1',
+    title: '반복 이벤트',
+    date: '2025-05-16',
+    repeat: { type: 'daily', interval: 1, endDate: '2025-05-18' },
+    startTime: '11:00',
+    endTime: '12:00',
+    description: '반복 팀 미팅',
+    location: '회의실 A',
+    category: '업무',
+    notificationTime: 5,
+  };
+
+  const mockEvents: Event[] = [
+    {
+      ...mockEvent,
+      date: '2025-05-16',
+      repeat: { type: 'daily', interval: 1 },
+    },
+    {
+      ...mockEvent,
+      date: '2025-05-17',
+      repeat: { type: 'daily', interval: 1 },
+    },
+    {
+      ...mockEvent,
+      date: '2025-05-18',
+      repeat: { type: 'daily', interval: 1 },
+    },
+  ];
+  it('반복 이벤트 수정시 단일 이벤트로 변경된다.', async () => {
+    setupMockHandlerRepeat(mockEvents);
+
+    const { result } = renderHook(() => useEventOperations(true));
+
+    await act(() => Promise.resolve(null));
+
+    const changedTitle = '수정된 이벤트';
+    const updatedEvent: Event = {
+      ...mockEvents[1],
+      title: changedTitle,
+    };
+
+    await act(async () => {
+      await result.current.saveEvent(updatedEvent);
+    });
+
+    expect(result.current.events).toHaveLength(3);
+    expect(result.current.events[1].title).toEqual(changedTitle);
+    expect(result.current.events[1].date).toBe('2025-05-17');
+    expect(result.current.events[1].repeat.type).toBe('none');
+  });
+});
