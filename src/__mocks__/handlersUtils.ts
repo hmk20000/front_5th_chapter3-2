@@ -93,22 +93,8 @@ export const setupMockHandlerDeletion = () => {
   );
 };
 
-export const setupMockHandlerRepeat = () => {
-  const mockEvents: Event[] = [
-    {
-      id: '1',
-      title: '반복 이벤트',
-      date: '2025-10-15',
-      startTime: '09:00',
-      endTime: '10:00',
-      description: '반복 이벤트입니다',
-      location: '어딘가',
-      category: '기타',
-      repeat: { type: 'daily', interval: 1 },
-      notificationTime: 10,
-    },
-  ];
-
+export const setupMockHandlerRepeat = (events = [] as Event[]) => {
+  const mockEvents: Event[] = [...events];
   server.use(
     http.get('/api/events', () => {
       return HttpResponse.json({ events: mockEvents });
