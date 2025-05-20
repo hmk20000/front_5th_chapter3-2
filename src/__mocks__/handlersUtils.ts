@@ -119,6 +119,12 @@ export const setupMockHandlerRepeat = (events = [] as Event[]) => {
       });
       return HttpResponse.json(events, { status: 200 });
     }),
+    http.delete('/api/events/:id', async ({ params }) => {
+      const { id } = params;
+      const index = mockEvents.findIndex((event) => event.id === id);
+      mockEvents.splice(index, 1);
+      return new HttpResponse(null, { status: 204 });
+    }),
     http.delete('/api/events-list', async ({ request }) => {
       const { events } = (await request.json()) as { events: Event[] };
       events.forEach((event) => {
