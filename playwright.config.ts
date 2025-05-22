@@ -1,25 +1,23 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  testDir: 'src/__tests__/e2e',
-  timeout: 30 * 1000,
-  retries: 0,
+  testDir: './src/e2e',
   use: {
     baseURL: 'http://localhost:5173',
-    trace: 'on-first-retry',
+    headless: true,
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
   },
-  projects: [
+  webServer: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      command: 'pnpm dev',
+      port: 5173,
+      reuseExistingServer: !process.env.CI,
     },
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      command: 'node server_e2e.js',
+      port: 3000,
+      reuseExistingServer: !process.env.CI,
     },
   ],
 });
